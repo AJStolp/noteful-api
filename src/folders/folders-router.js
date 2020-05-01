@@ -30,4 +30,37 @@ foldersRouter
                 return res.status(400).json({
                     error: { message: `Missing '${key}' in request` }
                 })
+
+        foldersService.insertFolders(
+            req.app.get('db'),
+            newFolder
+        )
+            .then(folder => {
+                res
+                    .status(201)
+                    .location(path.posix.join(req.originalUrl, `/${folder.id}`))
+                    .json(serializeFolder(folder))
+            })
+    })
+
+foldersRouter
+    .route('/:folder_id')
+    .all((req, res, next) => {
+        foldersService.getById(
+            req.app.get('db'),
+            req.params.folder_id
+        )
+        .then(folder => {
+            if(!folder) {
+                return res.status(404).json({
+                    error: { message: `Folder does not exist` }
+                })
+            }
+            res.folder = folder;
+            next()
+        })
+        .catch(next)
+    })
+    .get((req, res, next) => {
+        
     })
