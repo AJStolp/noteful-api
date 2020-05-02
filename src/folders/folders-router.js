@@ -1,6 +1,5 @@
 const path = require('path');
 const express = require('express');
-const xss = require('xss');
 const foldersService = require('./folders-service');
 
 const foldersRouter = express.Router();
@@ -26,7 +25,7 @@ foldersRouter
         const newFolder = { folder_title };
 
         for([key, value] of Object.entries(newFolder))
-            if(folder_title == null)
+            if(value == null)
                 return res.status(400).json({
                     error: { message: `Missing '${key}' in request` }
                 })
@@ -71,7 +70,7 @@ foldersRouter
         const updatedFolder = { id, folder_title };
 
         const numberOfValuesTitle = Object.values(updatedFolder).length
-        if(!numberOfValuesTitle === 0 ) {
+        if(numberOfValuesTitle === 0 ) {
             return res.status(400).json({
                 error: { message: `The new folder title needs text` }
             });
@@ -98,3 +97,4 @@ foldersRouter
         })
         .catch(next)
     })
+module.exports = foldersRouter

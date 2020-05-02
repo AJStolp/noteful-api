@@ -1,8 +1,8 @@
 const notesService = {
-    getAllFolders(knex) {
+    getAllNotes(knex) {
         return knex.select('*').from('noteful_notes')
     },
-    insertFolders(knex, newNote) {
+    insertNotes(knex, newNote) {
         return knex
             .insert(newNote)
             .into('noteful_notes')
@@ -14,12 +14,12 @@ const notesService = {
     getById(knex, id) {
         return knex.from('noteful_notes').select('*').where('id', id).first()
     },
-    deleteFolders(knex, id) {
+    deleteNotes(knex, id) {
         return knex('noteful_notes')
             .where({id})
             .delete()
     },
-    updateFolders(knex, id, newNoteFields){
+    updateNotes(knex, id, newNoteFields){
         return knex('noteful_notes')
             .where({id})
             .update(newNoteFields)
