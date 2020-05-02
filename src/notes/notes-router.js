@@ -7,7 +7,7 @@ const jsonParser = express.json();
 
 const serializeNote = note => ({
     id: note.id,
-    folder_id: note.id,
+    folder_id: note.folder_id,
     note_title: note.note_title,
     note_content: note.note_content,
     date_published: note.date_published
@@ -27,7 +27,7 @@ notesRouter
         const { note_title, note_content, folder_id, date_published } = req.body;
         const newNote = { note_title, note_content, folder_id };
 
-        for([key, value] of Object.entries(newNote))
+        for(const [key, value] of Object.entries(newNote))
             if(value === null) {
                 return res.status(400).json({
                     error: { message: `Sorry but '${key}' is needed` }
@@ -42,6 +42,7 @@ notesRouter
                 .status(200)
                 .location(path.posix.join(req.originalUrl, `${folder_id}`))
         })
+        .catch(next)
     })
 
 notesRouter

@@ -40,6 +40,7 @@ foldersRouter
                     .location(path.posix.join(req.originalUrl, `/${folder.id}`))
                     .json(serializeFolder(folder))
             })
+            .catch(next)
     })
 
 foldersRouter
@@ -66,8 +67,8 @@ foldersRouter
     })
 
     .patch(jsonParser, (req ,res, next) => {
-        const { id, folder_title } = req.body;
-        const updatedFolder = { id, folder_title };
+        const { folder_title } = req.body;
+        const updatedFolder = { folder_title };
 
         const numberOfValuesTitle = Object.values(updatedFolder).length
         if(numberOfValuesTitle === 0 ) {
