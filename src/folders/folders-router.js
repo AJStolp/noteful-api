@@ -61,6 +61,40 @@ foldersRouter
         })
         .catch(next)
     })
+
     .get((req, res, next) => {
-        
+        res.json(serializeFolder(res.folder))
+    })
+
+    .patch(jsonParser, (req ,res, next) => {
+        const { id, folder_title } = req.body;
+        const updatedFolder = { id, folder_title };
+
+        const numberOfValuesTitle = Object.values(updatedFolder).length
+        if(!numberOfValuesTitle === 0 ) {
+            return res.status(400).json({
+                error: { message: `The new folder title needs text` }
+            });
+        }
+
+        foldersService.updateFolders(
+            req.app.get('db'),
+            req.params.id,
+            updatedFolder
+        )
+        .then(folderEffected => {
+            res.status(200).end()
+        })
+        .catch(next)
+    })
+
+    .delete((req, res, next) => {
+        foldersService.deleteFolders(
+            req.app.get('db'),
+            req.params.id
+        )
+        .then(folderEffected => {
+            res.status(200).end()
+        })
+        .catch(next)
     })
