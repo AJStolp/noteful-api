@@ -79,7 +79,6 @@ foldersRouter
 
         foldersService.updateFolders(
             req.app.get('db'),
-            req.params.id,
             updatedFolder
         )
         .then(folderEffected => {
@@ -91,7 +90,7 @@ foldersRouter
     .delete((req, res, next) => {
         foldersService.deleteFolders(
             req.app.get('db'),
-            req.params.id
+            req.params.folder_id
         )
         .then(folderEffected => {
             res.status(200).end()

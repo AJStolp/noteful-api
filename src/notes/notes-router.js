@@ -42,6 +42,7 @@ notesRouter
                 .status(200)
                 .location(path.posix.join(req.originalUrl, `${folder_id}`))
         })
+      
         .catch(next)
     })
 
@@ -58,6 +59,8 @@ notesRouter
                     error: { message: `Sorry but note does not exist` }
                 })
             }
+            res.note = note;
+            next()
         })
         .catch(next)
     })
@@ -71,7 +74,7 @@ notesRouter
             req.app.get('db'),
             req.params.note_id
         )
-        .then(note => {
+        .then(noteEffected => {
             res.status(204).end()
         })
         .catch(next)
